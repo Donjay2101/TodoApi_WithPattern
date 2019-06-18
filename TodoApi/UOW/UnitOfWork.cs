@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using TodoApi.Entities;
 using TodoApi.Repositories;
 using TodoApi.Repositories.Interfaces;
@@ -15,6 +13,9 @@ namespace TodoApi.UOW
 
         private AppDBcontext _context = null;
         private IRepository<Todo> _todoRepository;
+        private IRepository<User> _userRepository;
+        private IRepository<Role> _roleRepository;
+        private IRepository<UserInRole> _userInRoleRepository;
         //private GenericRepository<User> _userRepository;
         //private GenericRepository<Product> _productRepository;
         //private GenericRepository<Token> _tokenRepository;
@@ -34,6 +35,36 @@ namespace TodoApi.UOW
                 if (this._todoRepository== null)
                     this._todoRepository = new TodoRepository<Todo>(_context);
                 return _todoRepository;
+            }
+        }
+
+        public IRepository<User> UserRepository
+        {
+            get
+            {
+                if (this._userRepository == null)
+                    this._userRepository = new UserRepository<User>(_context);
+                return _userRepository;
+            }
+        }
+
+        public IRepository<Role> RoleRepository
+        {
+            get
+            {
+                if (this._roleRepository == null)
+                    this._roleRepository = new TodoRepository<Role>(_context);
+                return _roleRepository;
+            }
+        }
+
+        public IRepository<UserInRole> UserInRoleRepository
+        {
+            get
+            {
+                if (this._userInRoleRepository == null)
+                    this._userInRoleRepository = new TodoRepository<UserInRole>(_context);
+                return _userInRoleRepository;
             }
         }
 

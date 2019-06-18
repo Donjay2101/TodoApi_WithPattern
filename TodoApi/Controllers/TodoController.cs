@@ -24,7 +24,7 @@ namespace TodoApi.Controllers
         }
 
         // GET: api/Todo/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var services = _service.Get(id);
@@ -41,15 +41,30 @@ namespace TodoApi.Controllers
 
         // PUT: api/Todo/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id)
         {
-
+            if (id >0)
+            {
+                var todo = _service.Get(id);
+                if (todo != null)
+                {
+                    todo.Status = !todo.Status;
+                }
+                var services = _service.Update(todo).GetAwaiter().GetResult();
+            }
+            return Ok();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (id >0)
+            {
+                var todo = _service.Get(id);
+                var services = _service.Delete(todo).GetAwaiter().GetResult();
+            }
+            return Ok();
         }
     }
 }

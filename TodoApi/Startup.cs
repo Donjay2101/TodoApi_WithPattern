@@ -42,6 +42,10 @@ namespace TodoApi
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IRepository<Todo>, TodoRepository<Todo>>();
             services.AddSingleton<ITodoService, TodoService>();
+            services.AddSingleton<IUserService, UserService>();
+
+            services.AddSingleton<IRoleService, RoleService>();
+            services.AddSingleton<IUserInRoleService, UserInRolesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

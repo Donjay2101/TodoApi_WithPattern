@@ -11,5 +11,8 @@ namespace TodoApi.UOW
     {
         void Save();
         IRepository<Todo> TodoRepository { get; }
+        IRepository<User> UserRepository { get; }
+        IRepository<Role> RoleRepository { get; }
+        IRepository<UserInRole> UserInRoleRepository { get; }
     }
 }

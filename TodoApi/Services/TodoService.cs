@@ -25,16 +25,9 @@ namespace TodoApi.Services
 
         public async Task<int> Add(Todo entity)
         {
-            using (var scope = new TransactionScope())
-            {
-                
-                await _uow.TodoRepository.Add(entity);
-                _uow.Save();
-                scope.Complete();
-                return entity.ID;
-            }
-            
-
+            await _uow.TodoRepository.Add(entity);
+            _uow.Save();
+            return entity.ID;
         }
 
         public async Task<bool> Delete(Todo entity)
@@ -42,16 +35,12 @@ namespace TodoApi.Services
             var success = false;
             if (entity != null)
             {
-                using (var scope = new TransactionScope())
+                var todo = _uow.TodoRepository.GetByID(entity.ID);
+                if (todo != null)
                 {
-                    var todo = _uow.TodoRepository.GetByID(entity.ID);
-                    if (todo != null)
-                    {
-                        await _uow.TodoRepository.Delete(todo);
-                        _uow.Save();
-                        scope.Complete();
-                        success = true;
-                    }
+                    await _uow.TodoRepository.Delete(todo);
+                    _uow.Save();
+                    success = true;
                 }
             }
             return success;
@@ -65,7 +54,7 @@ namespace TodoApi.Services
 
         public IEnumerable<Todo> GetAll()
         {
-            return _uow.TodoRepository.GetAll();
+            return _uow.TodoRepository.GetAll().OrderByDescending(x=>x.ID);
         }
 
         public async Task<bool> Update(Todo entity)
@@ -73,18 +62,8 @@ namespace TodoApi.Services
             var success = false;
             if (entity != null)
             {
-                using (var scope = new TransactionScope())
-                {
-                    var todo = _uow.TodoRepository.GetByID(entity.ID);
-                    if (todo != null)
-                    {
-                        todo.Task = entity.Task;
-                        await _uow.TodoRepository.Delete(todo);
-                        _uow.Save();
-                        scope.Complete();
-                        success = true;
-                    }
-                }
+                await _uow.TodoRepository.Update(entity);
+                _uow.Save();
             }
             return success;
         }
